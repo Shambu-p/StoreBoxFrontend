@@ -1,19 +1,27 @@
 import axios from "axios";
 
-
-const api = axios.create({
+const props: any = {
     // baseURL: "http://192.168.1.115:8080/",
     baseURL: "http://localhost:1111/",
     // crossdomain: true,
-    // headers: {
+    headers: {
     //     "Referrer-Policy": "no-referrer",
     //     "Content-Type": 'multipart/form-data; boudary=' + form._boundary,
     //     "Content-Type": 'application/x-www-form-urlencoded',
     //     "Cache-Control": "no-cache",
     //     "Access-Control-Allow-Origin": "*",
     //     "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS"
-    // }
-});
+    }
+};
+
+const api = axios.create(props);
+
+export function Authorized(token: string){
+
+    props.headers["Authorize"] = token;
+    return axios.create(props);
+
+}
 
 export async function Request(type: string, url: string, request_data?: (object | FormData)): Promise<any>{
     try {

@@ -47,14 +47,23 @@ export default function () {
                             onClick={() => {goTo("/home")}}
                         >
                             Home
-                            <i className="bi bi-people-fill ml-2"/>
+                            <i className="bi bi-house-fill ml-2"/>
                         </button>
+
                         <button
                             className="sidebar-item d-flex justify-content-end"
                             onClick={() => {goTo("/items")}}
                         >
                             Items
-                            <i className="bi bi-credit-card ml-2"/>
+                            <i className="bi bi-collection-fill ml-2"/>
+                        </button>
+
+                        <button
+                            className="sidebar-item d-flex justify-content-end"
+                            onClick={() => {goTo("/box_search")}}
+                        >
+                            Find Box
+                            <i className="bi bi-box ml-2"/>
                         </button>
 
                         <button
@@ -62,7 +71,15 @@ export default function () {
                             onClick={() => {goTo("/stores")}}
                         >
                             Stores
-                            <i className="bi bi-credit-card ml-2"/>
+                            <i className="bi bi-archive-fill ml-2"/>
+                        </button>
+
+                        <button
+                            className="sidebar-item d-flex justify-content-end"
+                            onClick={() => {goTo("/users")}}
+                        >
+                            Users
+                            <i className="bi bi-people-fill ml-2"/>
                         </button>
 
                     </div>
@@ -70,6 +87,7 @@ export default function () {
                     <div className="mb-3">
                         <button
                             className="sidebar-item d-flex justify-content-end"
+                            onClick={() => {goTo("/profile")}}
                         >
                             Profile
                             <i className="bi bi-person-badge-fill ml-2"/>

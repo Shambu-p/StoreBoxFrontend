@@ -21,6 +21,11 @@ import ViewStore from "./views/Stores/ViewStore";
 import AddStoreItem from "./views/Stores/AddStoreItem";
 import EditStoreItem from "./views/Stores/EditStoreItem";
 import EditItem from "./views/Items/EditItem";
+import CreateUser from "./views/Users/CreateUser";
+import UserList from "./views/Users/UserList";
+import Profile from "./views/Users/Profile";
+import ChangePassword from "./views/Users/ChangePassword";
+import ScanBox from "./views/Boxes/ScanBox";
 
 
 export default function (params: any) {
@@ -99,6 +104,8 @@ export default function (params: any) {
                         <Route path="/home" element={<Home />} />
                         <Route path="/items" element={<Items />} />
                         <Route path="/box_item" element={<BoxeItems />} />
+                        <Route path="/box_search" element={<ScanBox />} />
+
                         <Route path="/stores" element={<StoreList />} />
                         <Route path="/add_item" element={<AddItem />} />
                         <Route path="/edit_item" element={<EditItem />} />
@@ -108,6 +115,11 @@ export default function (params: any) {
                         <Route path="/view_store" element={<ViewStore />} />
                         <Route path="/add_store_item" element={<AddStoreItem />} />
                         <Route path="/edit_store_item" element={<EditStoreItem />} />
+
+                        <Route path="/create_user" element={<CreateUser />} />
+                        <Route path="/users" element={<UserList />} />
+                        <Route path="/profile" element={<Profile />} />
+                        <Route path="/change_password" element={<ChangePassword />} />
 
                         {/* <Route path="/admin" element={<AdminMain />}> */}
                             {/* <Route path="home" element={<Home />}/> */}
