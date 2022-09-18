@@ -1,7 +1,17 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import UserAPI from "../../API.Interaction/UserAPI";
 import NavBar from "../../components/Bars/NavBar";
+import AlertContext from "../../Contexts/AlertContext";
+import AuthContext from "../../Contexts/AuthContext";
 
 export default function () {
+
+    const {setAlert, setWaiting} = useContext(AlertContext);
+    const {isLoggedIn, loggedUser, setLoggedUser, setLoggedIn, setCookie} = useContext(AuthContext);
+
+    const navigate = useNavigate();
+    const params = useParams();
 
     const [inputs, setInput] = useState<{old_password: string, new_password: string, confirm_password: string}>({
         old_password: "",
@@ -9,8 +19,16 @@ export default function () {
         confirm_password: ""
     });
 
-    const createUser = (event: any) => {
+    const changePassword = async (event: any) => {
+
         event.preventDefault();
+        try{
+            await UserAPI.change_password(loggedUser.token, inputs.old_password, inputs.new_password, inputs.confirm_password);
+            setAlert("password has been changed! use the new password on the next login!");
+            navigate("/profile/"+loggedUser.id);
+        }catch(error){
+            setAlert("operation failed!", "danger");
+        }
 
     };
 
@@ -23,7 +41,7 @@ export default function () {
             <NavBar />
             <div className="container bg-white pt-4 mt-5">
                 <h3 className="card-title text-center mb-3">Create New User</h3>
-                <form onSubmit={createUser} className='card-body'>
+                <form onSubmit={changePassword} className='card-body'>
                     
                     <span>Old Password</span>
                     <div className="input-group mb-3">

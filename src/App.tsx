@@ -46,15 +46,15 @@ export default function (params: any) {
 
             setTimeout(() => {setAuthWaiting(true);}, 1);
             let response = await information(token);
-            setLoggedIn(response.status);
             setLoggedUser(response.data);
             setAuthWaiting(false);
+            setLoggedIn(response.status);
 
         };
 
-        // if(cookies.login_token && cookies.login_token != "") {
-        //     checkAuth(cookies.login_token);
-        // }
+        if(cookies.login_token && cookies.login_token != "") {
+            checkAuth(cookies.login_token);
+        }
 
 
     }, []);
@@ -100,26 +100,25 @@ export default function (params: any) {
             >
                 <BrowserRouter>
                     <Routes>
-                        <Route path="/" element={<Login />} />
-                        <Route path="/home" element={<Home />} />
-                        <Route path="/items" element={<Items />} />
-                        <Route path="/box_item" element={<BoxeItems />} />
-                        <Route path="/box_search" element={<ScanBox />} />
+                        <Route path="/" element={isLoggedIn ? (<Home />):(<Login />)} />
 
-                        <Route path="/stores" element={<StoreList />} />
-                        <Route path="/add_item" element={<AddItem />} />
-                        <Route path="/edit_item" element={<EditItem />} />
-                        <Route path="/store_items" element={<StoreItemList />} />
-                        <Route path="/add_store" element={<AddStore />} />
-                        <Route path="/edit_store" element={<EditStore />} />
-                        <Route path="/view_store" element={<ViewStore />} />
-                        <Route path="/add_store_item" element={<AddStoreItem />} />
-                        <Route path="/edit_store_item" element={<EditStoreItem />} />
-
-                        <Route path="/create_user" element={<CreateUser />} />
-                        <Route path="/users" element={<UserList />} />
-                        <Route path="/profile" element={<Profile />} />
-                        <Route path="/change_password" element={<ChangePassword />} />
+                        {isLoggedIn ? (<Route path="/items" element={<Items />} />):(<></>)}
+                        {isLoggedIn ? (<Route path="/box_item" element={<BoxeItems />} />):(<></>)}
+                        {isLoggedIn ? (<Route path="/box_search" element={<ScanBox />} />):(<></>)}
+                        {isLoggedIn ? (<Route path="/stores" element={<StoreList />} />):(<></>)}
+                        {isLoggedIn ? (<Route path="/add_item" element={<AddItem />} />):(<></>)}
+                        {isLoggedIn ? (<Route path="/edit_item/:item_id" element={<EditItem />} />):(<></>)}
+                        {isLoggedIn ? (<Route path="/store_items" element={<StoreItemList />} />):(<></>)}
+                        {isLoggedIn ? (<Route path="/add_store" element={<AddStore />} />):(<></>)}
+                        {isLoggedIn ? (<Route path="/edit_store/:id" element={<EditStore />} />):(<></>)}
+                        {isLoggedIn ? (<Route path="/view_store/:id" element={<ViewStore />} />):(<></>)}
+                        {isLoggedIn ? (<Route path="/add_store_item" element={<AddStoreItem />} />):(<></>)}
+                        {isLoggedIn ? (<Route path="/edit_store_item" element={<EditStoreItem />} />):(<></>)}
+                        
+                        {isLoggedIn ? (<Route path="/create_user" element={<CreateUser />} />):(<></>)}
+                        {isLoggedIn ? (<Route path="/users" element={<UserList />} />):(<></>)}
+                        {isLoggedIn ? (<Route path="/profile/:id" element={<Profile />} />):(<></>)}
+                        {isLoggedIn ? (<Route path="/change_password/:id" element={<ChangePassword />} />):(<></>)}
 
                         {/* <Route path="/admin" element={<AdminMain />}> */}
                             {/* <Route path="home" element={<Home />}/> */}

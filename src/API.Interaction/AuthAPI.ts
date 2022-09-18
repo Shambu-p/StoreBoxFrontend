@@ -1,15 +1,15 @@
-import API, {Authorized} from "./api";
+import API, {Authorized, normal} from "./api";
 
 export async function Login(email: string, password: string){
 
     try{
 
-        let response = await API.post("/Auth/login", {
+        let response = await normal().bodyRequest("post", "api/Auth/login", {
             email: email,
             password: password
         });
 
-        return response.data;
+        return response;
 
     }catch(error){
         throw error;
@@ -21,8 +21,8 @@ export async function information(token: string): Promise<{status: boolean, data
 
     try{
 
-        let response = await Authorized(token).post("/Auth/authorization", {});
-
+        let response = await Authorized(token).bodyRequest("get", "api/Auth/authorization");
+        
         return {
             status: true,
             data: {...response, token: token}
@@ -45,7 +45,7 @@ export async function createUser(token: string, user_data: {
     password: string,
 }) {
     try{
-        let response = await Authorized(token).post("/Users/create", user_data);
+        let response = await Authorized(token).bodyRequest("post", "/Users/create", user_data);
     }catch(error){
         throw error;
     }

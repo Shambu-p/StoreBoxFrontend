@@ -1,21 +1,46 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import UserAPI from "../../API.Interaction/UserAPI";
 import NavBar from "../../components/Bars/NavBar";
 import TableDisplay from "../../components/Extra/TableDisplay";
+import AlertContext from "../../Contexts/AlertContext";
+import AuthContext from "../../Contexts/AuthContext";
+import User from "../../Models/User";
 
 export default function (){
 
+    const {setAlert, setWaiting} = useContext(AlertContext);
+    const {isLoggedIn, loggedUser, setLoggedUser, setLoggedIn, setCookie} = useContext(AuthContext);
+
     const navigate = useNavigate();
-    const row = [
-        [1, "Tewodros Kassahun", "teddy@absoft.net", (<div className="d-flex">
-            <i style={{fontSize: "25px"}} className="bi bi-eye-fill mr-3" />
-            <i style={{fontSize: "25px"}} className="bi bi-card-list mr-3" />
-        </div>)],
-        [2, "Tewodros Tadesse", "tedy@absoft.net", (<div className="d-flex">
-            <i style={{fontSize: "25px"}} className="bi bi-eye-fill mr-3" />
-            <i style={{fontSize: "25px"}} className="bi bi-card-list mr-3" />
-        </div>)]
-    ];
+
+    const [users, setUsers] = useState<User[]>([]);
+
+    useEffect(() => {
+        
+        const fetchUsers = async () => {
+            try{
+                setUsers(await UserAPI.getAll(loggedUser.token));
+            }catch(error){
+                setAlert("cannot fetch Users list");
+            }
+        };
+
+        if(isLoggedIn){
+            fetchUsers();
+        }
+
+    }, [isLoggedIn]);
+
+    const row = users.map(user => [
+        user.id, 
+        user.name, 
+        user.email, 
+        (user.role == '1' ? "Administrator" : "User"),
+        (<div className="d-flex">
+            <i onClick={() => navigate("/profile/"+user.id)} style={{fontSize: "25px"}} className="bi bi-eye-fill mr-3" />
+        </div>)
+    ]);
 
     return (
         <div>
@@ -25,10 +50,15 @@ export default function (){
                     <h3 className="card-title">
                         System Users
                     </h3>
-                    <button className="btn btn-success" onClick={() => {navigate("/create_user")}}>Create User</button>
+                    <button 
+                        className="btn btn-success" 
+                        onClick={() => {navigate("/create_user")}}
+                    >
+                        Create User
+                    </button>
                 </div>
                 <TableDisplay 
-                    columns={["User Id", "Name", "Email Address", "Actions"]} 
+                    columns={["User Id", "Name", "Email Address", "Role", "Actions"]} 
                     rows={row} 
                 />
             </div>

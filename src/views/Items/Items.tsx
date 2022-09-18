@@ -1,15 +1,45 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import TableDisplay from "../../components/Extra/TableDisplay";
 import NavBar from "../../components/Bars/NavBar";
 import { useNavigate } from "react-router-dom";
+import ItemAPI from "../../API.Interaction/ItemAPI";
+import AlertContext from "../../Contexts/AlertContext";
+import AuthContext from "../../Contexts/AuthContext";
+import ItemModel from "../../Models/ItemModel";
 
 export default function(){
 
+    const {setAlert, setWaiting} = useContext(AlertContext);
+    const {isLoggedIn, loggedUser, setLoggedUser, setLoggedIn, setCookie} = useContext(AuthContext);
+
     const navigate = useNavigate();
-    let row = [
-        [1, "Desktop Computer", 25000, 5],
-        [2, "DDR4 RAM", 2500, 5]
-    ];
+    const [items, setItems] = useState<ItemModel[]>([]);
+
+    useEffect(() => {
+
+        const fetchItems = async () => {
+            try{
+                let items = await ItemAPI.allItems(loggedUser.token);
+                setItems(items);
+            }catch(error: any){
+                setAlert(error.message, "danger");
+            }
+        };
+        
+        if(isLoggedIn){
+            fetchItems();
+        }
+
+    }, [isLoggedIn]);
+
+
+
+    let row = items.map(item => [item.id, item.name, item.price, (<i 
+        className="bi bi-pen-fill" 
+        style={{fontSize: "25px"}} 
+        onClick={() => navigate("/edit_item/"+item.id)} 
+    />)]);
+
     return (
         <div>
             <NavBar />
@@ -26,7 +56,7 @@ export default function(){
                         "ID",
                         "Name",
                         "Price",
-                        "Quantity"
+                        "Actions"
                     ]}
                     rows={row}
                 />

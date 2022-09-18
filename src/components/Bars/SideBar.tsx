@@ -14,13 +14,14 @@ export default function () {
 
     const logout = () => {
 
+        setSideBar(false);
         const d = new Date();
         d.setTime(d.getTime() - (24*60*60*1000));
 
         removeCookie("login_token", {path: "/", expires: d.toUTCString()});
         setLoggedUser(null);
         setLoggedIn(false);
-        navigate("/login");
+        navigate("/");
 
     };
 
@@ -44,7 +45,7 @@ export default function () {
                     <div className="mb-3">
                         <button
                             className="sidebar-item d-flex justify-content-end"
-                            onClick={() => {goTo("/home")}}
+                            onClick={() => {goTo("/")}}
                         >
                             Home
                             <i className="bi bi-house-fill ml-2"/>
@@ -94,6 +95,7 @@ export default function () {
                         </button>
                         <button
                             className="sidebar-item d-flex justify-content-end"
+                            onClick={logout}
                         >
                             Sign Out
                             <i className="bi bi-door-closed ml-2"/>

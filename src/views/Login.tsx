@@ -1,7 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
 import {useNavigate} from "react-router-dom";
 import {Login} from "../API.Interaction/AuthAPI";
-import NavBar from '../components/Bars/NavBar';
 import AlertContext from "../Contexts/AlertContext";
 import AuthContext from "../Contexts/AuthContext";
 
@@ -14,21 +13,19 @@ export default function (){
 
     const navigate = useNavigate();
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        const checkLogin = () => {
-            if(isLoggedIn) {
-                navigate("/admin/home");
-            }
-        };
+    //     const checkLogin = () => {
+    //         if(isLoggedIn) {
+    //             navigate("/home");
+    //         }
+    //     };
 
-    }, [isLoggedIn]);
+    // }, [isLoggedIn]);
 
 
-    let inputOnChange = (input_name: "email"|"password", value: string|any) => {
-        let inp: { email: string, password: string } = {...inputs};
-        inp[input_name] = value;
-        setInputs(inp);
+    let inputOnChange = (input_name: "email"|"password", value: any) => {
+        setInputs({...inputs, [input_name]: value});
     };
 
     const handleSubmit = (e: any) => {
@@ -49,10 +46,10 @@ export default function (){
             setWaiting(false);
             setAlert("login successful", "success", "top-right-alert")
 
-            navigate("/admin/home");
+            navigate("/");
 
-        }catch ({message}){
-            setAlert(message, "danger", "top-right-alert")
+        }catch (error: any){
+            setAlert("incorrect email or password", "danger", "top-right-alert")
             setWaiting(false);
         }
     }
@@ -60,19 +57,31 @@ export default function (){
     return (
         <div className="container">
             <div className="d-flex justify-content-center" style={{width: "100%"}}>
-                <form className="login-form-container pt-3 pb-3 mt-4">
+                <form onSubmit={submitForm} className="login-form-container pt-3 pb-3 mt-4">
                     <div className="mb-3 d-flex justify-content-center">
                         <i className="bi bi-person-badge-fill" style={{fontSize: "4rem"}} />
                     </div>
 
                     <div className="input-group mb-3">
-                        <input required type="email" placeholder="email address" className="form-control form-control-lg" />
+                        <input 
+                            required 
+                            type="email" 
+                            placeholder="email address" 
+                            className="form-control form-control-lg"
+                            onChange={(event: any) => inputOnChange("email", event.target.value)}
+                        />
                     </div>
                     <div className="input-group mb-4">
-                        <input required type="password" placeholder='Password' className='form-control form-control-lg' />
+                        <input 
+                            required 
+                            type="password" 
+                            placeholder='Password' 
+                            className='form-control form-control-lg'
+                            onChange={(event: any) => inputOnChange("password", event.target.value)}
+                        />
                     </div>
 
-                    <button type="button" className='btn btn-dark btn-lg w-100'>
+                    <button type="submit" className='btn btn-dark btn-lg w-100'>
                         Sign In
                     </button>
 

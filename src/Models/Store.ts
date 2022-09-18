@@ -1,6 +1,8 @@
+import User from "./User";
 
 export default interface Store {
     id: number,
     name: string,
-    storekeeper?: number
+    storeKeeper?: number,
+    storeKeeperNavigation?: User
 };

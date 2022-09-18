@@ -2,7 +2,7 @@ import React from 'react';
 import {useNavigate} from 'react-router-dom';
 
 export default () => {
-    let history = useNavigate();
+    const history = useNavigate();
     return (
         <div className='d-flex justify-content-center mt-5'>
             <div className='p-3 w-50 rounded shadow-lg bg-white'>
@@ -13,7 +13,7 @@ export default () => {
                     nam quisquam quos sequi similique sunt voluptatum? Accusamus dicta illum non provident, veniam
                     voluptates. Animi, consectetur.
                 </p>
-                <button className="btn btn-primary btn-lg">Back to Home</button>
+                <button onClick={() => history("/")} className="btn btn-primary btn-lg">Back to Home</button>
             </div>
         </div>
     );

@@ -1,8 +1,8 @@
-import axios from "axios";
+import axios, { AxiosInstance } from "axios";
 
 const props: any = {
     // baseURL: "http://192.168.1.115:8080/",
-    baseURL: "http://localhost:1111/",
+    baseURL: "https://localhost:7021/",
     // crossdomain: true,
     headers: {
     //     "Referrer-Policy": "no-referrer",
@@ -16,12 +16,85 @@ const props: any = {
 
 const api = axios.create(props);
 
-export function Authorized(token: string){
+const rest: {
+    api: AxiosInstance|null, 
+    bodyRequest: Function, 
+    formRequest: Function, 
+    prepareData: Function
+} = {
 
-    props.headers["Authorize"] = token;
-    return axios.create(props);
+    api: axios.create(props),
+
+    bodyRequest: async (type: ("post"|"get"|"put"|"delete"), route: string, request_data?: any): Promise<any> => {
+        try {
+
+            let response;
+            switch (type) {
+                case "post":
+                    response = await rest.api?.post(route, request_data ?? {});
+                    break;
+                case "put":
+                    response = await rest.api?.put(route, request_data ?? {});
+                    break;
+                case "delete":
+                    response = await rest.api?.delete(route);
+                    break;
+                default:
+                    response = await rest.api?.get(route);
+                    break;
+            }
+    
+            return response ? response.data : {};
+    
+        }catch(error){
+            throw error;
+        }
+    },
+
+    formRequest: async (type: string, route: string, request_data?: (object | FormData)): Promise<any> => {
+        try {
+    
+            let data = request_data ? rest.prepareData(request_data) : new FormData();
+            return rest.bodyRequest(type, route, data);
+    
+        }catch(error){
+            throw error;
+        }
+    },
+
+    prepareData: (request_data: any): FormData => {
+
+        if(typeof request_data !== "object"){
+            return new FormData();
+        }
+    
+        let req_data = new FormData();
+        let arr = Object.keys(request_data);
+    
+        if(arr.length > 0){
+            arr.forEach(key => {req_data.append(key, request_data[key])});
+        }
+    
+        return req_data;
+    
+    }
 
 }
+
+export function Authorized(token: string){
+
+    props.headers["Authorization"] = "bearer " + token;
+    rest.api = axios.create(props);
+    return rest;
+
+}
+
+export function normal(){
+    rest.api = axios.create(props);
+    return rest;
+}
+
+
 
 export async function Request(type: string, url: string, request_data?: (object | FormData)): Promise<any>{
     try {

@@ -17,7 +17,7 @@ export default function(){
                     <h3 className="card-title mb-3">
                         Box Items
                     </h3>
-                    <BoxItemCard item={{id: 1, name: "Desktop Computer", price: 25000, quantity: 5}} />
+                    <BoxItemCard item={{id: 1, name: "Desktop Computer", price: 25000}} />
                 </div>
                 <div className="col-sm-12 col-md-6 col-lg-4">
                     <BoxItemEditCard />

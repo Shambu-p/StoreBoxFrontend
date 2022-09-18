@@ -1,17 +1,33 @@
 import { stringify } from "querystring";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
+import UserAPI from "../../API.Interaction/UserAPI";
 import NavBar from "../../components/Bars/NavBar";
+import AlertContext from "../../Contexts/AlertContext";
+import AuthContext from "../../Contexts/AuthContext";
 
 export default function () {
 
+    const {setAlert, setWaiting} = useContext(AlertContext);
+    const {isLoggedIn, loggedUser, setLoggedUser, setLoggedIn, setCookie} = useContext(AuthContext);
+
+    const navigate = useNavigate();
     const [inputs, setInput] = useState<{name: string, email: string, password: string}>({
         name: "",
         email: "",
         password: "password"
     });
 
-    const createUser = (event: any) => {
+    const createUser = async (event: any) => {
+        
         event.preventDefault();
+        try{
+            await UserAPI.createUser(loggedUser.token, UserAPI._(inputs.name, inputs.email, inputs.password, '0'));
+            setAlert("User has been created", "success");
+            navigate("/users");
+        }catch(error){
+            setAlert("Operation failed!", "danger");
+        }
 
     };
 

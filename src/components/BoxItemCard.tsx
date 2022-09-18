@@ -9,7 +9,6 @@ export default function ({item}: {item: ItemModel}){
             <div className="card-body">
                 <h5 className="card-title">{item.name}</h5>
                 <h6 className="card-subtitle mb-2">Price: {item.price}Birr</h6>
-                <h6 className="card-subtitle">Quantity: {item.quantity}</h6>
                 <div className="mt-3">
                     <button className="btn btn-dark btn-sm">
                         <i className="bi bi-pencil-square" /> Edit
