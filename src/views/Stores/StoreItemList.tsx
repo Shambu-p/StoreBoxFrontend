@@ -1,16 +1,47 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import TableDisplay from "../../components/Extra/TableDisplay";
 import NavBar from "../../components/Bars/NavBar";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import AlertContext from "../../Contexts/AlertContext";
+import AuthContext from "../../Contexts/AuthContext";
+import StoreItemsAPI from "../../API.Interaction/StoreItems";
+import Store from "../../Models/Store";
 
 export default function(){
 
-    const navigate = useNavigate();
+    const {setAlert, setWaiting} = useContext(AlertContext);
+    const {isLoggedIn, loggedUser, setLoggedUser, setLoggedIn, setCookie} = useContext(AuthContext);
 
-    let row = [
-        ["Desktop Computer", 7, 5],
-        ["DDR4 RAM", 10, 5]
-    ];
+    const navigate = useNavigate();
+    const params: any = useParams();
+
+    const [store, setStore] = useState<Store|undefined>();
+
+    useEffect(() => {
+        
+        const fetchUsers = async () => {
+            try{
+                setStore(await StoreItemsAPI.storeItems(loggedUser.token, params.store_id));
+            }catch(error){
+                setAlert("cannot fetch Users list");
+            }
+        };
+
+        if(isLoggedIn){
+            fetchUsers();
+        }
+
+    }, [isLoggedIn]);
+
+    let row = !store ? [] : store.storeItems.map(item => [item.item?.name, item.totalAmount, item.unboxedAmount, (
+        <div className="d-flex">
+            {/* <i  className="bi bi-eye-fill mr-2" style={{fontSize: "25px"}} /> */}
+            <i  
+                onClick={() => navigate("/edit_store_item/"+item.id)}
+                className="bi bi-pen-fill mr-2" style={{fontSize: "25px"}}
+            />
+        </div>
+    )]);
 
     return (
         <div>
@@ -18,16 +49,17 @@ export default function(){
             <div className="container mt-5">
                 <div className="d-flex justify-content-between mb-3">
                     <h3 className="card-title">
-                        Items Available
+                        Items Available: {store?.name}
                     </h3>
-                    <button className="btn btn-success" onClick={() => navigate("/add_store_item")}>Add Item</button>
+                    <button className="btn btn-success" onClick={() => navigate("/add_store_item/" + params.store_id)}>Add Item</button>
                 </div>
                 
                 <TableDisplay
                     columns={[
                         "Item Name",
                         "Total Amount",
-                        "Unboxed Amount"
+                        "Unboxed Amount",
+                        "Actions"
                     ]}
                     
                     rows={row}

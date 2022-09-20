@@ -108,12 +108,12 @@ export default function (params: any) {
                         {isLoggedIn ? (<Route path="/stores" element={<StoreList />} />):(<></>)}
                         {isLoggedIn ? (<Route path="/add_item" element={<AddItem />} />):(<></>)}
                         {isLoggedIn ? (<Route path="/edit_item/:item_id" element={<EditItem />} />):(<></>)}
-                        {isLoggedIn ? (<Route path="/store_items" element={<StoreItemList />} />):(<></>)}
+                        {isLoggedIn ? (<Route path="/store_items/:store_id" element={<StoreItemList />} />):(<></>)}
                         {isLoggedIn ? (<Route path="/add_store" element={<AddStore />} />):(<></>)}
                         {isLoggedIn ? (<Route path="/edit_store/:id" element={<EditStore />} />):(<></>)}
                         {isLoggedIn ? (<Route path="/view_store/:id" element={<ViewStore />} />):(<></>)}
-                        {isLoggedIn ? (<Route path="/add_store_item" element={<AddStoreItem />} />):(<></>)}
-                        {isLoggedIn ? (<Route path="/edit_store_item" element={<EditStoreItem />} />):(<></>)}
+                        {isLoggedIn ? (<Route path="/add_store_item/:store_id" element={<AddStoreItem />} />):(<></>)}
+                        {isLoggedIn ? (<Route path="/edit_store_item/:id" element={<EditStoreItem />} />):(<></>)}
                         
                         {isLoggedIn ? (<Route path="/create_user" element={<CreateUser />} />):(<></>)}
                         {isLoggedIn ? (<Route path="/users" element={<UserList />} />):(<></>)}

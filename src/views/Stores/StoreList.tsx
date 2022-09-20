@@ -36,8 +36,16 @@ export default function (){
         store.id, 
         store.name, 
         (<div className="d-flex">
-            <i onClick={() => navigate("/view_store/"+store.id)} style={{fontSize: "25px"}} className="bi bi-eye-fill mr-3" />
-            <i style={{fontSize: "25px"}} className="bi bi-card-list mr-3" />
+            <i 
+                onClick={() => navigate("/view_store/"+store.id)} 
+                style={{fontSize: "25px"}} 
+                className="bi bi-eye-fill mr-3" 
+            />
+            <i 
+                onClick={() => navigate("/store_items/"+store.id)}
+                style={{fontSize: "25px"}} 
+                className="bi bi-card-list mr-3" 
+            />
         </div>)
     ]);
 
